@@ -1,22 +1,24 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = htmlspecialchars($_POST["name"]);
-    $email = htmlspecialchars($_POST["email"]);
-    $subject = htmlspecialchars($_POST["subject"]);
-    $message = htmlspecialchars($_POST["message"]);
+    $name = htmlspecialchars($_POST['name']);
+    $email = htmlspecialchars($_POST['email']);
+    $subject = htmlspecialchars($_POST['subject']);
+    $message = htmlspecialchars($_POST['message']);
 
-    $to = "bousaidkarim1996@gmail.com";
-    $headers = "From: $email" . "\r\n" .
-               "Reply-To: $email" . "\r\n" .
-               "X-Mailer: PHP/" . phpversion();
+    $to = "deine.email@beispiel.de"; // Deine E-Mail-Adresse
+    $headers = "From: " . $email . "\r\n" .
+               "Reply-To: " . $email . "\r\n" .
+               "Content-Type: text/plain; charset=UTF-8";
 
-    if (mail($to, $subject, $message, $headers)) {
-        echo "Thank you for contacting us, $name! We will get back to you soon.";
+    $mailBody = "Name: $name\nE-Mail: $email\n\n$message";
+
+    if (mail($to, $subject, $mailBody, $headers)) {
+        echo "Danke! Deine Nachricht wurde gesendet.";
     } else {
-        echo "Oops! Something went wrong. Please try again later.";
+        echo "Entschuldigung, beim Senden der Nachricht ist ein Fehler aufgetreten.";
     }
 } else {
-    header("HTTP/1.1 405 Method Not Allowed");
-    echo "405 Method Not Allowed";
+    http_response_code(405); // Methode nicht erlaubt
+    echo "Nur POST-Anfragen erlaubt.";
 }
 ?>
